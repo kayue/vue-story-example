@@ -10,6 +10,7 @@
   "dependencies": {
     "animejs": "^3.0.1",
     "core-js": "^2.6.5",
+    "hammerjs": "^2.0.8",
     "vue": "^2.6.10"
   },
   "devDependencies": {

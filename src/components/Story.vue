@@ -13,6 +13,7 @@
 
 <script>
 import anime from 'animejs/lib/anime.es.js';
+import Hammer from 'hammerjs';
 
 const SLIDE_DURATION = 2000;
 
@@ -54,11 +55,26 @@ export default {
       this.timeline.add({
         targets: $timeline.getElementsByClassName('slice')[index].getElementsByClassName('progress'),
         width: '100%',
-        changeBegin: (anim) => {
+        changeBegin: () => {
           // Update the Vue componenet state when progress bar begins to play
           this.currentSlideIndex = index;
         }
       });
+    });
+
+    this.hammer = new Hammer.Manager(this.$el, {
+      recognizers: [
+        [Hammer.Tap],
+        [Hammer.Press, { time: 1, threshold: 1000000 }]
+      ]
+    })
+
+    this.hammer.on("press", () => {
+      this.timeline.pause();
+    });
+
+    this.hammer.on("pressup", () => {
+      this.timeline.play();
     });
 
     // Play the story
