@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Story msg="Welcome to Your Vue.js App"/>
+    <Story :slides="story" v-for="(story, index) in stories" :key="index" /> 
   </div>
 </template>
 
@@ -11,7 +11,16 @@ export default {
   name: 'app',
   components: {
     Story
-  }
+  },
+  data() {
+    return {
+      stories: [
+        ["#D53738", "#638867"],
+        ["#DAF7A6", "#FFC300", "#FF5733"],
+        ["#00BCD4"]
+      ]
+    };
+  },
 }
 </script>
 

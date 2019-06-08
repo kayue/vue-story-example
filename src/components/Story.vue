@@ -1,12 +1,12 @@
 <template>
   <div class="story">
     <div class="timeline">
-      <div class="slice">
+      <div class="slice" v-for="(slide, i) in slides" :key="i">
         <div class="progress">&nbsp;</div>
       </div>
     </div>
     <div class="slide">
-      <p>Hello World</p>
+      <p>{{ slides }}</p>
     </div>
   </div>
 </template>
@@ -15,7 +15,7 @@
 export default {
   name: 'Story',
   props: {
-    msg: String
+    slides: Array
   }
 }
 </script>
