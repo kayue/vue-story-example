@@ -42,10 +42,31 @@ export default {
     deactivate: function() {
       this.timeline.pause();
     },
-    nextSlide: function() {}, // Tap right to skip to next slide
-    previousSlide: function() {}, 
-    nextStory: function() {}, // Swipe, or reach the last slide
-    previousStory: function() {}, 
+    resetSlide: function() { // Jump to beginning of the slide
+      this.timeline.pause();
+      this.timeline.seek(this.currentSlideIndex * SLIDE_DURATION);
+      this.timeline.play();
+    },
+    nextSlide: function() {
+      if (this.currentSlideIndex < this.slides.length - 1) {
+        this.currentSlideIndex++;
+        this.resetSlide();
+      } else {
+        this.nextStory();
+      }
+    },
+    previousSlide: function() {
+      if (this.currentSlideIndex > 0) {
+        this.currentSlideIndex--;
+        this.resetSlide();
+      } else {
+        this.previousStory();
+      }
+    }, 
+    nextStory: function() {
+      // activate() the next story... but how?
+    },
+    previousStory: function() {}
   },
   mounted() {   
     let $timeline = this.$el.getElementsByClassName('timeline')[0];
@@ -73,8 +94,17 @@ export default {
       this.timeline.pause();
     });
 
-    this.hammer.on("pressup", () => {
+    this.hammer.on("pressup tap", () => {
       this.timeline.play();
+    });
+
+    // Tap on the side to navigate between slides
+    this.hammer.on("tap", event => {
+      if (event.center.x > window.innerWidth / 3) {
+        this.nextSlide();
+      } else {
+        this.previousSlide();
+      }
     });
 
     // Play the story
