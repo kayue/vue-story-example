@@ -1,12 +1,12 @@
 <template>
-  <div class="story">
+  <div class="story" :style="{ background: slides[currentSlideIndex] }">
     <div class="timeline">
       <div class="slice" v-for="(slide, i) in slides" :key="i">
         <div class="progress">&nbsp;</div>
       </div>
     </div>
     <div class="slide">
-      <p>{{ slides }}</p>
+      <p>{{ slides[currentSlideIndex] }}</p>
     </div>
   </div>
 </template>
@@ -16,6 +16,13 @@ export default {
   name: 'Story',
   props: {
     slides: Array
+  },
+  data() {
+    return {
+      currentSlideIndex: 0,
+      isActive: false,
+      timeline: null,
+    }
   }
 }
 </script>
