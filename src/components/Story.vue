@@ -12,17 +12,57 @@
 </template>
 
 <script>
+import anime from 'animejs/lib/anime.es.js';
+
+const SLIDE_DURATION = 2000;
+
 export default {
   name: 'Story',
   props: {
     slides: Array
   },
   data() {
+    const timeline = anime.timeline({
+      autoplay: false,
+      duration: SLIDE_DURATION,
+      easing: 'linear'
+    });
+
     return {
       currentSlideIndex: 0,
       isActive: false,
-      timeline: null,
+      timeline: timeline,
     }
+  },
+  methods: {
+    activate: function() { // Start timer
+      this.timeline.play();
+    },
+    deactivate: function() {
+      this.timeline.pause();
+    },
+    nextSlide: function() {}, // Tap right to skip to next slide
+    previousSlide: function() {}, 
+    nextStory: function() {}, // Swipe, or reach the last slide
+    previousStory: function() {}, 
+  },
+  mounted() {   
+    let $timeline = this.$el.getElementsByClassName('timeline')[0];
+
+    // Add progress bars to the timeline animation group
+    this.slides.forEach((color, index) => {  
+      this.timeline.add({
+        targets: $timeline.getElementsByClassName('slice')[index].getElementsByClassName('progress'),
+        width: '100%',
+        changeBegin: (anim) => {
+          // Update the Vue componenet state when progress bar begins to play
+          this.currentSlideIndex = index;
+        }
+      });
+    });
+
+    // Play the story
+    this.activate();
   }
 }
 </script>
