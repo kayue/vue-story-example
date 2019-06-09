@@ -94,6 +94,7 @@ export default {
 
     this.hammer = new Hammer.Manager(this.$el, {
       recognizers: [
+        [Hammer.Pan, { direction: Hammer.DIRECTION_HORIZONTAL }],
         [Hammer.Tap],
         [Hammer.Press, { time: 1, threshold: 1000000 }]
       ]
@@ -113,6 +114,17 @@ export default {
         this.nextSlide();
       } else {
         this.previousSlide();
+      }
+    });
+
+    // Handle swipe
+    this.hammer.on("pan", event => {
+      if (event.isFinal) {
+        if (event.deltaX < 0) {
+          this.nextStory();
+        } else if (event.deltaX > 0) {
+          this.previousStory();
+        }
       }
     });
   }
