@@ -1,6 +1,19 @@
-# vue-story
+# Instagram Story with Vue Example
+
+Show you how to build Instagram Story with Vue.  
+A [Show me the code](https://github.com/code4hk/showmethecode) meetup sharing.
+
+![Story](https://i.imgur.com/lMpGYTr.png)
+
+## Features
+
+- Timer and timeline on the top
+- Hold to pause current slide
+- Tap to navigate between slides
+- Swipe to navigate between stories
 
 ## Project setup
+
 ```
 npm install
 ```
@@ -14,16 +27,3 @@ npm run serve
 ```
 npm run build
 ```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
