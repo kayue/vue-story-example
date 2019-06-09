@@ -14,6 +14,7 @@
 <script>
 import anime from 'animejs/lib/anime.es.js';
 import Hammer from 'hammerjs';
+import { EventBus } from '../helpers/EventBus.js';
 
 const SLIDE_DURATION = 2000;
 
@@ -37,7 +38,7 @@ export default {
   },
   methods: {
     activate: function() { // Start timer
-      this.timeline.play();
+      this.resetSlide();
     },
     deactivate: function() {
       this.timeline.pause();
@@ -64,9 +65,11 @@ export default {
       }
     }, 
     nextStory: function() {
-      // activate() the next story... but how?
+      EventBus.$emit('NEXT_STORY');
     },
-    previousStory: function() {}
+    previousStory: function() {
+      EventBus.$emit('PREVIOUS_STORY');
+    }
   },
   mounted() {   
     let $timeline = this.$el.getElementsByClassName('timeline')[0];
@@ -106,9 +109,6 @@ export default {
         this.previousSlide();
       }
     });
-
-    // Play the story
-    this.activate();
   }
 }
 </script>
