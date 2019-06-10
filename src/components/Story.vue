@@ -83,7 +83,7 @@ export default {
           // Update the Vue componenet state when progress bar begins to play
           this.currentSlideIndex = index;
         },
-        complete: (anim) => {
+        complete: () => {
           // Move to the next story when finished playing all slides
           if (index === this.slides.length - 1) {
             this.nextStory();

@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :style="{'margin-left': currentStoryIndex * -100 + 'vw'}">
+  <div id="app" :style="getMargin()">
     <Story :slides="story" v-for="(story, index) in stories" :key="index" ref="stories" /> 
   </div>
 </template>
@@ -43,17 +43,25 @@ export default {
     });
 
     this.$refs.stories[0].activate();
+  },
+  methods: {
+    getMargin() {
+      if (window.innerWidth <= 768) {
+        return {'margin-left': this.currentStoryIndex * -100 + 'vw'};
+      } 
+
+      return {'margin-top': this.currentStoryIndex * -100 + 'vh'};
+    }
   }
 }
 </script>
 
 <style>
 html, body {
-  height: 100vh;
   width: 100vw;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 body {
@@ -62,8 +70,18 @@ body {
 }
 
 #app {
-  width: 9999vw;
-  position: relative;
-  transition: margin-left .3s ease-out;
+  transition: margin .3s ease-out;
+}
+
+@media (max-width: 768px) {
+  html, body {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  #app {
+    width: 9999vw;
+    position: relative;    
+  }
 }
 </style>
