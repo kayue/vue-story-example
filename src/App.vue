@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import debounce from 'lodash/debounce';
 import Story from './components/Story.vue';
 import { EventBus } from './helpers/EventBus.js';
 
@@ -42,6 +43,45 @@ export default {
       }
     });
 
+    // Disable mouse wheel
+    this.$el.addEventListener('wheel', (event) => {
+        event.preventDefault();
+    });
+
+    // Debounced previous and next
+    const debouncedNext = debounce(() => {
+        EventBus.$emit('NEXT_STORY');
+    }, 200, { leading: true, trailing: false });
+
+    const debouncedPrevious = debounce(() => {
+        EventBus.$emit('PREVIOUS_STORY');
+    }, 200, { leading: true, trailing: false });
+
+    // Mouse wheel handling
+    // https://codepen.io/kayue/full/qGZOrb
+    const debouncedWheelCallback = debounce((event) => {
+        // No wheel function in mobile
+        if (window.innerWidth <= 768) {
+            return;
+        }
+
+        const delta = event.deltaY;
+
+        // Ignore small wheel movement
+        if (Math.abs(delta) < 25) {
+            debouncedWheelCallback.cancel();
+            return;
+        }
+
+        if (delta > 0) {
+            debouncedNext();
+        } else if (delta < 0) {
+            debouncedPrevious();
+        }
+    }, 30, { leading: true, trailing: false });
+
+    this.$el.addEventListener('wheel', debouncedWheelCallback);
+
     this.$refs.stories[0].activate();
   },
   methods: {
@@ -61,7 +101,7 @@ html, body {
   width: 100vw;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 body {
@@ -76,7 +116,6 @@ body {
 @media (max-width: 768px) {
   html, body {
     height: 100vh;
-    overflow: hidden;
   }
 
   #app {
